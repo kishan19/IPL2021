@@ -1,4 +1,4 @@
 .ipl
 .DS_Store
-data/
-.ipynb_checkpoints
+data2/
+.ipynb_checkpoints/
