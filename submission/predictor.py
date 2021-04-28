@@ -5,14 +5,14 @@ import numpy as np
 import joblib
 
 ##Load data file
-vdf_lastn=pd.read_csv('data/vdf.csv')
-tdf_lastn=pd.read_csv('data/tdf.csv')
+vdf_lastn=pd.read_csv('vdf.csv')
+tdf_lastn=pd.read_csv('tdf.csv')
 
 ##Load joblib file
-venue_encoder=joblib.load('data/venue_encoder.joblib')
-team_encoder=joblib.load('data/team_encoder.joblib')
-minmaxscaler=joblib.load('data/min_max_scaler.joblib')
-model=joblib.load('data/model.joblib')
+venue_encoder=joblib.load('venue_encoder.joblib')
+team_encoder=joblib.load('team_encoder.joblib')
+minmaxscaler=joblib.load('min_max_scaler.joblib')
+model=joblib.load('model.joblib')
 
 def predictRuns(testInput):
 
@@ -35,5 +35,11 @@ def predictRuns(testInput):
 
     Xt=minmaxscaler.transform(tdf_x)
     prediction=int(np.round(model.predict(Xt),0))
+
+    ##Check wickets lost in the Powerplay
+
+    wkt_factor=(test_df['batsmen'].apply(lambda x:len(x.split(',')))[0]-2)*7
+
+    prediction=prediction-wkt_factor
 
     return prediction
