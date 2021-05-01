@@ -37,9 +37,13 @@ def predictRuns(testInput):
     prediction=int(np.round(model.predict(Xt),0))
 
     ##Check wickets lost in the Powerplay
+    try:
+      wkt_factor=(test_df['batsmen'].apply(lambda x:len(x.split(',')))[0]-2)*7
+    except Exception as ex:
+       wkt_factor=0
+       pass
 
-    wkt_factor=(test_df['batsmen'].apply(lambda x:len(x.split(',')))[0]-2)*7
-
-    prediction=prediction-wkt_factor
+    ##Adjust prediction for wickets lost in PP
+    #prediction=prediction-wkt_factor
 
     return prediction
